@@ -1,26 +1,48 @@
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import { ConnectedRouter } from 'connected-react-router';
 import { Route, Switch, Redirect } from 'react-router';
 import { Provider } from 'react-redux';
 import store from '../store/index';
+import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
+import theme from './theme';
 import history from './history';
-import Login from '../pages/login';
-import NotFound from '../pages/notFound';
+import ScrollTop from './scrollTop';
+import Login from '../pages/login/index';
+import NotFound from '../pages/notFound/index';
+import Header from '../components/header/index';
 
 class App extends Component {
+    constructor(props) {
+        super(props);
+    }
+
     render () {
         return (
             <Provider store={store}>
-                <ConnectedRouter history={history}>
-                    <Switch>
-                        <Route exact path="/" render={() => <Redirect to="/login" />} />
-                        <Route exact path="/login" component={Login} />
-                        <Route path="*" component={NotFound} />
-                    </Switch>
-                </ConnectedRouter>
+                <MuiThemeProvider theme={theme}>
+                    <ConnectedRouter history={history}>
+                        <ScrollTop>
+                            <Header />
+                            <Wrapper>
+                                <Switch>
+                                    <Route exact path="/" render={() => <Redirect to="/login" />} />
+                                    <Route exact path="/login" component={Login} />
+                                    <Route path="*" component={NotFound} />
+                                </Switch>
+                            </Wrapper>
+                        </ScrollTop>
+                    </ConnectedRouter>
+                </MuiThemeProvider>
             </Provider>
         );
     }
 }
+
+const Wrapper = styled.div`
+    width: 100%;
+    height: 100%;
+    padding-top: 48px;
+`;
 
 export default App;
