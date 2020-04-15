@@ -9,6 +9,7 @@ import theme from './theme';
 import history from './history';
 import ScrollTop from './scrollTop';
 import Login from '../pages/login/index';
+import Register from '../pages/register/index';
 import NotFound from '../pages/notFound/index';
 import Header from '../components/header/index';
 
@@ -28,6 +29,7 @@ class App extends Component {
                                 <Switch>
                                     <Route exact path="/" render={() => <Redirect to="/login" />} />
                                     <Route exact path="/login" component={Login} />
+                                    <Route exact path="/register" component={Register} />
                                     <Route path="*" component={NotFound} />
                                 </Switch>
                             </Wrapper>

@@ -1,7 +1,8 @@
+import styled from 'styled-components';
 import { makeStyles } from "@material-ui/styles";
-import { blue } from '@material-ui/core/colors'
+import { Link } from 'react-router-dom';
 
-export default makeStyles({
+export const useStyles = makeStyles({
     root: {
         maxWidth: 500,
         margin: '10rem auto 0',
@@ -18,5 +19,19 @@ export default makeStyles({
     },
     button: {
         marginTop: '2.5rem',
+    },
+    gridContainer: {
+        marginTop: '1rem'
+    },
+    gridRight: {
+        textAlign: 'right'
     }
 });
+
+export const LinkLeftText = styled(Link)`
+    font-size: 1.5rem;
+`;
+
+export const LinkRightText = styled(Link)`
+    font-size: 1.5rem;
+`;
