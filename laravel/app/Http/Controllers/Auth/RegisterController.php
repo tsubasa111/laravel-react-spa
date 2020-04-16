@@ -4,10 +4,11 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
-use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\Admin\CreatePost;
+use Illuminate\Support\Facades\DB;
+use App\Repositories\Admin\AdminRepositoryInterface;
+use App\Services\Admin\AdminServiceInterface;
 
 class RegisterController extends Controller
 {
@@ -36,38 +37,44 @@ class RegisterController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
+    public function __construct(
+        AdminRepositoryInterface $AdminRepositoryInterface,
+        AdminServiceInterface $AdminServiceInterface
+    ) {
         $this->middleware('guest');
+        $this->AdminRepository = $AdminRepositoryInterface;
+        $this->AdminService = $AdminServiceInterface;
     }
 
     /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
+     * 管理者を作成してログインした後にトークンを返す
+     * 
+     * @param CreatePost $request
      */
-    protected function validator(array $data)
+    public function register(CreatePost $request)
     {
-        return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
-    }
+        $name = $request->input('name');
+        $email = $request->input('email');
+        $password = $request->input('password');
+        DB::beginTransaction();
+        try {
+            $this->AdminRepository->createAdminister($name, $email, $password);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $data = $e->getMessage();
+            return response()->fail($data, 500);
+        }
 
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\User
-     */
-    protected function create(array $data)
-    {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
+        $response = $this->AdminSevice->getAccessToken($email, $password);
+
+        $data = [
+            'access_token' => $response['access_token'],
+            'refresh_token' => $response['refresh_token'],
+            'name' => $name,
+            'email' => $email
+        ];
+
+        return response()->success($data);
     }
 }

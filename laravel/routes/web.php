@@ -16,3 +16,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('/{uri}', function () {
     return view('base');
 });
+
+Route::group(['prefix' => '/api/'], function () {
+    Route::post('/user/create', 'Auth\RegisterController@register');
+
+    Route::group(['middleware' => 'auth:api'], function () {
+        Route::post('/user', function (Request $request) {
+            return $request->user();
+        });
+    });
+});

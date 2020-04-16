@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use App\Services\Admin\AdminServiceInterface;
 
 class LoginController extends Controller
 {
@@ -33,8 +35,25 @@ class LoginController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(AdminServiceInterface $AdminServiceInterface)
     {
         $this->middleware('guest')->except('logout');
+        $this->AdminService = $AdminServiceInterface;
+    }
+
+    /**
+     * ログイン機能
+     * 
+     * @param Request $request
+     */
+    public function login(Request $request)
+    {
+        $response = $this->AdminService->getAccessToken($request->input('email'), $request->input('password'));
+        $data = [
+            'access_token' => $response['access_token'],
+            'refresh_token' => $response['refresh_token']
+        ];
+
+        return $response->success($data, 200);
     }
 }
