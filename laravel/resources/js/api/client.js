@@ -1,5 +1,7 @@
 import axios from 'axios';
+import NProgress from 'nprogress';
 import { getAccessToken } from '../utils/auth';
+
 let requestsCounter = 0;
 
 const Client = (url, method, data = {}) => {
@@ -13,22 +15,22 @@ const Client = (url, method, data = {}) => {
     return axios({
         method,
         url: url,
-        data
+        data,
+        validateStatus: status => {
+            return status > 400;
+        }
     })
         .then(response => {
-            if (response.status >= 200 && response.status < 300) {
-                if ((--requestsCounter) === 0) {
-                    NProgress.done();
-                }
-                return response.json();
+            if ((--requestsCounter) === 0) {
+                NProgress.done();
             }
 
-            return Promise.reject(response);
+            return Promise.resolve(response);
         }).catch(error => {
             if (requestsCounter > 0 && ((--requestsCounter) === 0)) {
                 NProgress.done();
             }
-            return Promise.reject(error);
+            return Promise.reject(error.response);
         });
 }
 

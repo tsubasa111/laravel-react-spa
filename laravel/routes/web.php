@@ -18,11 +18,12 @@ Route::get('/{uri}', function () {
 });
 
 Route::group(['prefix' => '/api/'], function () {
-    Route::post('/user/create', 'Auth\RegisterController@register');
+    Route::post('user/register', 'Auth\RegisterController@register');
+    Route::post('user/login', 'Auth\LoginController@login');
 
     Route::group(['middleware' => 'auth:api'], function () {
-        Route::post('/user', function (Request $request) {
-            return $request->user();
+        Route::post('user', function (Request $request) {
+            return response()->success($request->user());
         });
     });
 });

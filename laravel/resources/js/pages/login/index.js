@@ -4,11 +4,11 @@ import Container from '@material-ui/core/Container'
 import Card from '@material-ui/core/Card'
 import LockIcon from '@material-ui/icons/Lock';
 import Typography from '@material-ui/core/Typography';
-import AuthTextField from '../../components/textFiled/authTextField/index';
+import AuthTextField from '../../components/textField/authTextField/index';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 
-const fileds = [
+const fields = [
     {
         id: 'mail_address',
         label: 'メールアドレス'
@@ -28,8 +28,8 @@ const Login = () => {
                 <LockIcon className={classes.fontSizeLarge} />
                 <Typography align="center" variant="h3">Login</Typography>
                 {
-                    fileds.map(filed => {
-                        return <AuthTextField key={filed.id} id={filed.id} label={filed.label} />
+                    fields.map(field => {
+                        return <AuthTextField key={field.id} id={field.id} label={field.label} />
                     })
                 }
                 <Button classes={{

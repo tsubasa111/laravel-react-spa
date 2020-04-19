@@ -4,7 +4,6 @@ const loginRequest = () => ({
     type: types.LOGIN_REQUEST
 });
 
-
 const loginSuccess = (data) => ({
     type: types.LOGIN_SUCCESS,
     payload: {

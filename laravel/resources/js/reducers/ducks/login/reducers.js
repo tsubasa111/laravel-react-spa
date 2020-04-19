@@ -2,7 +2,7 @@ import types from './types';
 
 const initialState = {
     authenticated: false,
-    loading: false,
+    isLoading: false,
     user: {},
     error: {}
 }
@@ -12,20 +12,23 @@ const reducer = (state = initialState, action) => {
         case types.LOGIN_REQUEST:
             return {
                 ...state,
-                loading: true
+                isLoading: true
             };
         case types.LOGIN_SUCCESS:
             return {
-                loading: false,
-                user: {
-                    name: action.payload.data.user
-                }
+                ...state,
+                authenticated: true,
+                isLoading: false,
+                user: action.payload.data.user
             }
         case types.LOGIN_FAIL:
             return {
-                loading: false,
+                ...state,
+                isLoading: false,
                 error: action.error.data
             }
+        default:
+            return state;
     }
 }
 

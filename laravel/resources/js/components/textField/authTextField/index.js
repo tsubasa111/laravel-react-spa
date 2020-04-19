@@ -9,8 +9,15 @@ const AuthTextField = (props) => {
         className={classes.root}
         id={props.id}
         label={props.label}
+        type={props.type}
         fullWidth
     />;
+}
+
+AuthTextField.defaultProps = {
+    id: '',
+    label: '',
+    type: 'text'
 }
 
 export default AuthTextField;
