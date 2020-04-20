@@ -1,6 +1,7 @@
 import actions from './actions';
 import { loginApi, registerApi } from '../../../api/auth';
 import { setAccessToken, setRefreshToken } from '../../../utils/auth';
+import { push } from 'connected-react-router';
 
 const login = (email, password) => {
     return async (dispatch) => {
@@ -15,15 +16,22 @@ const login = (email, password) => {
     }
 }
 
-const register = (name, email, password, password_confirmed) => {
-    return async () => {
-        console.log(name, email, password, password_confirmed);
-        // const body = {
-        //     name, email, password, password_confirmed
-        // }
-        // const data = await registerApi(body);
-        // console.log(data);
-        // login(email, password);
+const register = (name, email, password, password_confirmation) => {
+    return async (dispatch) => {
+        dispatch(actions.loginRequest());
+        const body = {
+            name, email, password, password_confirmation
+        }
+        await registerApi(body)
+            .then(response => {
+                setAccessToken(response.data.access_token);
+                setRefreshToken(response.data.refresh_token);
+                dispatch(actions.loginSuccess(response.data));
+                dispatch(push('/home'));
+            })
+            .catch(response => {
+                dispatch(actions.loginFail(response.data.errors));
+            });
     }
 }
 

@@ -11,6 +11,15 @@ class BaseRequest extends FormRequest
 {
     /**
      * [override] バリデーション失敗時ハンドリング
+     * data: {
+     *  errors: {
+     *    key: [
+     *      error: '',
+     *      error_: ''
+     *    ],
+     *    ...
+     *  }
+     * }
      *
      * @param Validator $validator
      * @throw HttpResponseException

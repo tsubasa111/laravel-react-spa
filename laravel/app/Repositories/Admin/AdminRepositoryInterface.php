@@ -10,5 +10,5 @@ interface AdminRepositoryInterface
      * @param string $email
      * @param string $password
      */
-    public function create(string $name, string $email, string $password);
+    public function createAdminister(string $name, string $email, string $password);
 }

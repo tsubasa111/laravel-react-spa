@@ -10,7 +10,7 @@ use App\Model\Admin;
 
 class AdminRepository implements AdminRepositoryInterface
 {
-    public function create($name, $email, $password)
+    public function createAdminister($name, $email, $password)
     {
         return Admin::create([
             'name' => $name,

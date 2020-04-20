@@ -32,7 +32,10 @@ class LoginPost extends BaseRequest
     public function messages()
     {
         return [
-            //
+            '*.required' => '必須項目です。',
+            '*.string' => 'おかしな値が入力されています。',
+            'email.exists' => 'メールアドレスが違います。',
+            'password.min' => '最低8文字以上入力してください。'
         ];
     }
 }

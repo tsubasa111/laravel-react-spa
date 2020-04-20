@@ -2,13 +2,19 @@
 
 namespace App\Http\Controllers\Auth;
 
+//- extends
 use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
-use Illuminate\Foundation\Auth\RegistersUsers;
-use App\Http\Requests\Admin\CreatePost;
+
+//- ファザード + trait
 use Illuminate\Support\Facades\DB;
+use Illuminate\Foundation\Auth\RegistersUsers;
+
+//- インジェクト
 use App\Repositories\Admin\AdminRepositoryInterface;
 use App\Services\Admin\AdminServiceInterface;
+
+//- Request
+use App\Http\Requests\Admin\CreatePost;
 
 class RegisterController extends Controller
 {
@@ -17,20 +23,11 @@ class RegisterController extends Controller
     | Register Controller
     |--------------------------------------------------------------------------
     |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
+    | 管理者作成コントローラ
     |
     */
 
     use RegistersUsers;
-
-    /**
-     * Where to redirect users after registration.
-     *
-     * @var string
-     */
-    protected $redirectTo = RouteServiceProvider::HOME;
 
     /**
      * Create a new controller instance.
@@ -41,7 +38,6 @@ class RegisterController extends Controller
         AdminRepositoryInterface $AdminRepositoryInterface,
         AdminServiceInterface $AdminServiceInterface
     ) {
-        $this->middleware('guest');
         $this->AdminRepository = $AdminRepositoryInterface;
         $this->AdminService = $AdminServiceInterface;
     }
@@ -50,6 +46,7 @@ class RegisterController extends Controller
      * 管理者を作成してログインした後にトークンを返す
      * 
      * @param CreatePost $request
+     * @return object
      */
     public function register(CreatePost $request)
     {
@@ -58,23 +55,31 @@ class RegisterController extends Controller
         $password = $request->input('password');
         DB::beginTransaction();
         try {
-            $this->AdminRepository->createAdminister($name, $email, $password);
+            $data = $this->AdminRepository->createAdminister($name, $email, $password);
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
-            $data = $e->getMessage();
-            return response()->fail($data, 500);
+            $error = [
+                'main' => '管理者作成に失敗しました。'
+            ];
+            return response()->fail($error, 500);
         }
 
-        $response = $this->AdminSevice->getAccessToken($email, $password);
+        $response = $this->AdminService->getAccessToken($email, $password);
 
-        $data = [
-            'access_token' => $response['access_token'],
-            'refresh_token' => $response['refresh_token'],
-            'name' => $name,
-            'email' => $email
-        ];
+        if ($response['status'] < 400) {
+            $data = [
+                'access_token' => $response['access_token'],
+                'refresh_token' => $response['refresh_token'],
+                'user' => [
+                    'name' => $name,
+                    'email' => $email
+                ]
+            ];
 
-        return response()->success($data);
+            return response()->success($data);
+        }
+
+        return response()->fail($response, $response['status']);
     }
 }

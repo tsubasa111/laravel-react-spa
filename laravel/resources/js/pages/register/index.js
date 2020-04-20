@@ -1,7 +1,6 @@
 import React from 'react';
 import * as Style from './style';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import Container from '@material-ui/core/Container'
 import Card from '@material-ui/core/Card'
 import LockIcon from '@material-ui/icons/Lock';
@@ -27,13 +26,14 @@ const fields = [
         type: 'password'
     },
     {
-        id: "password_confirmed",
+        id: "password_confirmation",
         label: "再パスワード",
         type: 'password'
     }
 ];
 
 const Register = (props) => {
+    console.log(props);
     const classes = Style.useStyles();
 
     const handleRegister = () => {
@@ -48,7 +48,7 @@ const Register = (props) => {
         <Container>
             <Card className={classes.root}>
                 <LockIcon className={classes.fontSizeLarge} />
-                <Typography align="center" variant="h3">Rgister</Typography>
+                <Typography align="center" variant="h3">Register</Typography>
                 {
                     fields.map(field => {
                         return <AuthTextField key={field.id} id={field.id} label={field.label} type={field.type} />
@@ -76,8 +76,8 @@ function mapStateToProps () {
 
 function mapDispatchToProps (dispatch) {
     return {
-        register (name, email, password, password_confirmed) {
-            dispatch(operations.register(name, email, password, password_confirmed));
+        register (name, email, password, password_confirmation) {
+            dispatch(operations.register(name, email, password, password_confirmation));
         }
     }
 }

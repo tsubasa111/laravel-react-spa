@@ -8,7 +8,6 @@ use GuzzleHttp\Client;
 use App\Services\Admin\AdminServiceInterface;
 use App\Repositories\Admin\AdminRepositoryInterface as AdminDataAccess;
 use App\Repositories\Passport\PassportRepositoryInterface as PassportDataAccess;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
 class AdminService implements AdminServiceInterface
 {
@@ -55,15 +54,15 @@ class AdminService implements AdminServiceInterface
             ]);
         } catch (\Exception $e) {
             return [
-                'error' => [
+                'errors' => [
                     'main' => 'メールアドレスもしくはパスワードが一致しませんでした。'
                 ],
-                'status' => 'ng'
+                'status' => '500'
             ];
         }
 
         $result = json_decode((string) $response->getBody(), true);
-        $result['status'] = 'ok';
+        $result['status'] = '200';
 
         return $result;
     }
@@ -87,21 +86,23 @@ class AdminService implements AdminServiceInterface
             ]);
         } catch (\Exception $e) {
             return [
-                'error' => [
+                'errors' => [
                     'main' => 'トークンが一致しません'
                 ],
-                'status' => 'ng'
+                'status' => '500'
             ];
         }
 
         $result = json_decode((string) $response->getBody(), true);
-        $result['status'] = 'ok';
+        $result['status'] = '200';
 
         return $result;
     }
 
     /**
      * urlと証明書を確認するかどうか
+     * 
+     * @return array
      */
     private function getOauthInfo()
     {

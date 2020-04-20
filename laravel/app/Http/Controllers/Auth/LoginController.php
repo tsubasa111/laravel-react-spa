@@ -37,7 +37,6 @@ class LoginController extends Controller
      */
     public function __construct(AdminServiceInterface $AdminServiceInterface)
     {
-        $this->middleware('guest')->except('logout');
         $this->AdminService = $AdminServiceInterface;
     }
 

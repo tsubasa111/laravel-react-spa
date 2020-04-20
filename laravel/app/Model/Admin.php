@@ -2,15 +2,18 @@
 
 namespace App\Model;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
 
-class Admin extends Model
+class Admin extends Authenticatable
 {
     use HasApiTokens;
 
     protected $table = 'admins';
+
+    protected $guarded = [
+        'id'
+    ];
 
     protected $hidden = [
         'password',

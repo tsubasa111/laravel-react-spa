@@ -38,7 +38,13 @@ class CreatePost extends BaseRequest
     public function messages()
     {
         return [
-            // 
+            '*.string' => 'おかしな値が入力されています。',
+            '*.required' => '必須項目です。',
+            '*.max' => '255文字までで入力してください。',
+            'email.email' => 'メールアドレスの形式で入力してください。',
+            'email.unique' => '同じメールアドレスが登録されています。',
+            'password.min' => '最低8文字以上入力してください。',
+            'password.confirmed' => 'パスワードが一致しません。'
         ];
     }
 }

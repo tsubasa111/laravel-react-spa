@@ -17,6 +17,12 @@ class ResponseMacroServiceProvider extends ServiceProvider
         /**
          * 成功したレスポンス
          * 
+         * data = [
+         *  key: {
+         *  },
+         *  ...
+         * ];
+         * 
          * @param array $data
          * @param int $status [200系, 300系]
          */
@@ -26,6 +32,16 @@ class ResponseMacroServiceProvider extends ServiceProvider
 
         /**
          * 失敗したレスポンス
+         * 
+         * data = [
+         *  errors: {
+         *    key: [
+         *      validation
+         *    ],
+         *    ...
+         *  },
+         *  ...
+         * ];
          * 
          * @param array $data
          * @param int $status [400系, 500系]

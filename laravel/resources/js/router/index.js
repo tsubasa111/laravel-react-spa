@@ -10,6 +10,7 @@ import history from './history';
 import ScrollTop from './scrollTop';
 import Login from '../pages/login/index';
 import Register from '../pages/register/index';
+import Home from '../pages/home/index';
 import NotFound from '../pages/notFound/index';
 import Header from '../components/header/index';
 
@@ -30,6 +31,7 @@ class App extends Component {
                                     <Route exact path="/" render={() => <Redirect to="/login" />} />
                                     <Route exact path="/login" component={Login} />
                                     <Route exact path="/register" component={Register} />
+                                    <Route exact path="/home" component={Home} />
                                     <Route path="*" component={NotFound} />
                                 </Switch>
                             </Wrapper>
