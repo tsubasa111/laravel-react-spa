@@ -25,7 +25,7 @@ class LoginPost extends BaseRequest
     {
         return [
             'email' => ['required', 'string', 'exists:admins'],
-            'password' => ['requreid', 'string', 'min:8']
+            'password' => ['required', 'string', 'min:8']
         ];
     }
 

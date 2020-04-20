@@ -55,7 +55,7 @@ class RegisterController extends Controller
         $password = $request->input('password');
         DB::beginTransaction();
         try {
-            $data = $this->AdminRepository->createAdminister($name, $email, $password);
+            $data = $this->AdminRepository->createAdmin($name, $email, $password);
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
@@ -72,8 +72,8 @@ class RegisterController extends Controller
                 'access_token' => $response['access_token'],
                 'refresh_token' => $response['refresh_token'],
                 'user' => [
-                    'name' => $name,
-                    'email' => $email
+                    'name' => $data->name,
+                    'email' => $data->email
                 ]
             ];
 

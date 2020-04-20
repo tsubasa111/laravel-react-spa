@@ -33,7 +33,6 @@ const fields = [
 ];
 
 const Register = (props) => {
-    console.log(props);
     const classes = Style.useStyles();
 
     const handleRegister = () => {

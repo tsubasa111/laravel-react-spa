@@ -5,15 +5,6 @@ namespace App\Services\Admin;
 interface AdminServiceInterface
 {
     /**
-     * administerを作成するためのロジック
-     * 
-     * @param string $name
-     * @param string $email
-     * @param string $password
-     */
-    public function createAdminister(stirng $name, string $email, stirng $password);
-
-    /**
      * アクセストークンを取得
      * 
      * @param string $email

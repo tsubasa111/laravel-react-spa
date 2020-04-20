@@ -10,9 +10,16 @@ const login = (email, password) => {
             email,
             password
         }
-        const data = await loginApi(body);
-        console.log(data);
-        // dispatch(actions.loginSuccess(data));
+        await loginApi(body)
+            .then(response => {
+                setAccessToken(response.data.access_token);
+                setRefreshToken(response.data.refresh_token);
+                dispatch(actions.loginSuccess(response.data));
+                dispatch(push('/home'));
+            })
+            .catch(response => {
+                dispatch(actions.loginFail(response.data.errors));
+            });
     }
 }
 

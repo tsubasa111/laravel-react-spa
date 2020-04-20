@@ -2,57 +2,62 @@
 
 namespace App\Http\Controllers\Auth;
 
+//- extends
 use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
+
+//- facade + trait
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Http\Request;
+
+//- DDD
 use App\Services\Admin\AdminServiceInterface;
+use App\Repositories\Admin\AdminRepositoryInterface;
+
+//- request
+use App\Http\Requests\Admin\LoginPost;
 
 class LoginController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
-    |
-    */
-
     use AuthenticatesUsers;
-
-    /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
-    protected $redirectTo = RouteServiceProvider::HOME;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(AdminServiceInterface $AdminServiceInterface)
-    {
+    public function __construct(
+        AdminServiceInterface $AdminServiceInterface,
+        AdminRepositoryInterface $AdminRepositoryInterface
+    ) {
         $this->AdminService = $AdminServiceInterface;
+        $this->AdminRepository = $AdminRepositoryInterface;
     }
 
     /**
      * ログイン機能
      * 
-     * @param Request $request
+     * @param LoginPost $request
      */
-    public function login(Request $request)
+    public function login(LoginPost $request)
     {
-        $response = $this->AdminService->getAccessToken($request->input('email'), $request->input('password'));
-        $data = [
-            'access_token' => $response['access_token'],
-            'refresh_token' => $response['refresh_token']
-        ];
+        $email = $request->input('email');
+        $password = $request->input('password');
 
-        return $response->success($data, 200);
+        $response = $this->AdminService->getAccessToken($email, $password);
+
+        if ($response['status'] < 400) {
+            $user = $this->AdminRepository->getAdmin($email, $password);
+            $data = [
+                'access_token' => $response['access_token'],
+                'refresh_token' => $response['refresh_token'],
+                'user' => [
+                    'name' => $user->name,
+                    'email' => $user->email
+                ]
+            ];
+
+            return response()->success($data, 200);
+        }
+
+        return response()->fail($response, $response['status']);
     }
 }

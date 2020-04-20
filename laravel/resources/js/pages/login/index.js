@@ -1,5 +1,7 @@
 import React from 'react';
 import * as Style from './style';
+import { connect } from 'react-redux';
+import { operations } from '../../reducers/ducks/login/index';
 import Container from '@material-ui/core/Container'
 import Card from '@material-ui/core/Card'
 import LockIcon from '@material-ui/icons/Lock';
@@ -11,16 +13,26 @@ import Grid from '@material-ui/core/Grid';
 const fields = [
     {
         id: 'mail_address',
-        label: 'メールアドレス'
+        label: 'メールアドレス',
+        type: 'text'
     },
     {
         id: "password",
-        label: "パスワード"
+        label: "パスワード",
+        type: 'password'
     }
 ];
 
-const Login = () => {
+const Login = (props) => {
     const classes = Style.useStyles();
+
+    const handleLogin = () => {
+        let data = [];
+        fields.map(field => {
+            data.push(document.getElementById(field.id).value);
+        });
+        props.login(...data);
+    }
 
     return (
         <Container>
@@ -29,12 +41,12 @@ const Login = () => {
                 <Typography align="center" variant="h3">Login</Typography>
                 {
                     fields.map(field => {
-                        return <AuthTextField key={field.id} id={field.id} label={field.label} />
+                        return <AuthTextField key={field.id} id={field.id} label={field.label} type={field.type} />
                     })
                 }
                 <Button classes={{
                     root: classes.button
-                }} fullWidth variant="contained" color="primary">Login</Button>
+                }} fullWidth variant="contained" color="primary" onClick={handleLogin}>Login</Button>
                 <Grid container classes={{
                     root: classes.gridContainer
                 }}>
@@ -52,4 +64,16 @@ const Login = () => {
     )
 }
 
-export default Login;
+function mapStateToProps () {
+    return {}
+}
+
+function mapDispatchToProps (dispatch) {
+    return {
+        login (email, password) {
+            dispatch(operations.login(email, password));
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

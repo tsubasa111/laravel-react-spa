@@ -21,19 +21,6 @@ class AdminService implements AdminServiceInterface
         $this->guzzle = $Client;
     }
 
-    public function createAdminister($name, $email, $password)
-    {
-        $admin = $this->Admin->create($name, $email, $password);
-
-        $data = [
-            'name' => $admin->name,
-            'email' => $admin->email,
-            'password' => $admin->password
-        ];
-
-        return $data;
-    }
-
     public function getAccessToken($email, $password)
     {
         list($url, $verify) = $this->getOauthInfo();

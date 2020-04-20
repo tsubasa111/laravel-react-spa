@@ -6,8 +6,8 @@ let requestsCounter = 0;
 
 const Client = (url, method, data = {}) => {
     const token = getAccessToken();
-    if (token) {
-        headers.Authorization = `Bearer ${token}`;
+    const headers = {
+        Authorization: `Bearer ${token}`
     }
     requestsCounter++;
     NProgress.start();
@@ -16,6 +16,7 @@ const Client = (url, method, data = {}) => {
         method,
         url: url,
         data,
+        headers,
         validateStatus: status => {
             return status >= 200 && status < 400;
         }
