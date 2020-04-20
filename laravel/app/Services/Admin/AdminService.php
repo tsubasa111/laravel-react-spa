@@ -44,7 +44,7 @@ class AdminService implements AdminServiceInterface
                 'errors' => [
                     'main' => 'メールアドレスもしくはパスワードが一致しませんでした。'
                 ],
-                'status' => '500'
+                'status' => '422'
             ];
         }
 

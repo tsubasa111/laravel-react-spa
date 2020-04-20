@@ -1,6 +1,6 @@
 import actions from './actions';
-import { loginApi, registerApi } from '../../../api/auth';
-import { setAccessToken, setRefreshToken } from '../../../utils/auth';
+import { loginApi, registerApi, reLoginApi } from '../../../api/auth';
+import { setAccessToken, setRefreshToken, getRefreshToken, getAccessToken } from '../../../utils/auth';
 import { push } from 'connected-react-router';
 
 const login = (email, password) => {
@@ -42,7 +42,36 @@ const register = (name, email, password, password_confirmation) => {
     }
 }
 
+const reLogin = () => {
+    return async (dispatch) => {
+        const access_token = getAccessToken();
+        if (access_token) {
+            dispatch(actions.loginRequest());
+            const refresh_token = getRefreshToken();
+            await reLoginApi({ refresh_token })
+                .then(response => {
+                    setAccessToken(response.data.access_token);
+                    setRefreshToken(response.data.refresh_token);
+                    dispatch(actions.loginSuccess(response.data));
+                })
+                .catch(response => {
+                    dispatch(actions.loginFail(response.data.errors));
+                });
+        }
+    }
+}
+
+const logout = () => {
+    return async (dispatch) => {
+        dispatch(actions.logout());
+        setAccessToken();
+        setRefreshToken();
+    }
+}
+
 export default {
     login,
-    register
+    register,
+    reLogin,
+    logout
 }

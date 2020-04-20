@@ -13,17 +13,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/', function () {
+    return view('base');
+});
+
 Route::get('/{uri}', function () {
     return view('base');
 });
 
 Route::group(['prefix' => '/api/'], function () {
-    Route::group(['middleware' => 'guest'], function () {
-        Route::post('user/register', 'Auth\RegisterController@register');
-        Route::post('user/login', 'Auth\LoginController@login');
-    });
+    Route::post('user/register', 'Auth\RegisterController@register');
+    Route::post('user/login', 'Auth\LoginController@login');
 
     Route::group(['middleware' => 'auth:api'], function () {
+        Route::post('user/login/again', 'Auth\LoginController@reLogin');
         Route::post('user', function (Request $request) {
             return response()->success($request->user());
         });

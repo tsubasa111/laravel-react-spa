@@ -12,7 +12,8 @@ const reducer = (state = initialState, action) => {
         case types.LOGIN_REQUEST:
             return {
                 ...state,
-                isLoading: true
+                isLoading: true,
+                error: {}
             };
         case types.LOGIN_SUCCESS:
             return {
@@ -26,6 +27,13 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 isLoading: false,
                 error: action.error.data
+            }
+        case types.LOGOUT:
+            return {
+                ...state,
+                authenticated: false,
+                user: {},
+                error: {}
             }
         default:
             return state;

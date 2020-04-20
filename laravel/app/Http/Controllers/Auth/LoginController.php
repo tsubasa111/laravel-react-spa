@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 
 //- facade + trait
+use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 //- DDD
@@ -55,7 +56,34 @@ class LoginController extends Controller
                 ]
             ];
 
-            return response()->success($data, 200);
+            return response()->success($data, $response['status']);
+        }
+
+        return response()->fail($response, $response['status']);
+    }
+
+    /**
+     * refresh_tokenを使ってログインしなおす
+     * 
+     * @param Request $request
+     */
+    public function reLogin(Request $request)
+    {
+        $response = $this->AdminService->getRefreshAccessToken($request->input('refresh_token'));
+
+        if ($response['status'] < 400) {
+            $user = $request->user();
+
+            $data = [
+                'access_token' => $response['access_token'],
+                'refresh_token' => $response['refresh_token'],
+                'user' => [
+                    'name' => $user->name,
+                    'email' => $user->email
+                ]
+            ];
+
+            return response()->success($data, $response['status']);
         }
 
         return response()->fail($response, $response['status']);

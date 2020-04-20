@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { operations } from '../../reducers/ducks/login/index';
 import * as Style from './style';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -7,8 +9,14 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 
-const Header = () => {
+const Header = (props) => {
     const classes = Style.useStyles();
+
+    const handleLogout = () => {
+        if (props.authenticated) {
+            props.logout();
+        }
+    }
 
     return (
         <AppBar position="fixed">
@@ -20,11 +28,25 @@ const Header = () => {
                     News
                 </Typography>
                 <Style.LinkBtn to="/login">
-                    <Button color="inherit">login</Button>
+                    <Button color="inherit" onClick={handleLogout}>{props.authenticated ? 'logout' : 'login'}</Button>
                 </Style.LinkBtn>
             </Toolbar>
         </AppBar>
     );
 }
 
-export default Header;
+function mapStateToProps ({ login }) {
+    return {
+        authenticated: login.authenticated
+    }
+}
+
+function mapDispatchToProps (dispatch) {
+    return {
+        logout () {
+            dispatch(operations.logout());
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

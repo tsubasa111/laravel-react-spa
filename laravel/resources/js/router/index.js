@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { ConnectedRouter } from 'connected-react-router';
-import { Switch, Redirect } from 'react-router';
+import { Route, Switch, Redirect } from 'react-router';
 import { Provider } from 'react-redux';
 import store from '../store/index';
 import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
@@ -11,14 +11,17 @@ import ScrollTop from '../utils/scrollTop';
 import Login from '../pages/login/index';
 import Register from '../pages/register/index';
 import Home from '../pages/home/index';
+import Company from '../pages/company/index';
 import NotFound from '../pages/notFound/index';
 import Header from '../components/header/index';
 import GuestRoute from './guestRoute';
 import AuthRoute from './authRoute';
+import { operations } from '../reducers/ducks/login/index';
 
 class App extends Component {
     constructor(props) {
         super(props);
+        store.dispatch(operations.reLogin());
     }
 
     render () {
@@ -30,11 +33,12 @@ class App extends Component {
                             <Header />
                             <Wrapper>
                                 <Switch>
-                                    <GuestRoute exact path="/" render={() => <Redirect to="/login" />} />
+                                    <GuestRoute exact path="/" render={<Redirect to="/login" />} />
                                     <GuestRoute exact path="/login" component={Login} title="login" />
                                     <GuestRoute exact path="/register" component={Register} title="register" />
                                     <AuthRoute exact path="/home" component={Home} title="home" />
-                                    <AuthRoute path="*" component={NotFound} title="NotFound" />
+                                    <AuthRoute exact path="/company" component={Company} title="company" />
+                                    <Route path="*" component={NotFound} title="NotFound" />
                                 </Switch>
                             </Wrapper>
                         </ScrollTop>

@@ -23,8 +23,4 @@ function mapStateToProps ({ login }) {
     }
 }
 
-function mapDispatchToProps () {
-    return {}
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(GuestRoute);
+export default connect(mapStateToProps)(GuestRoute);

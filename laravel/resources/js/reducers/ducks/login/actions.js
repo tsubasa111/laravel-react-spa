@@ -18,8 +18,13 @@ const loginFail = (data) => ({
     }
 });
 
+const logout = () => ({
+    type: types.LOGOUT,
+})
+
 export default {
     loginRequest,
     loginSuccess,
-    loginFail
+    loginFail,
+    logout
 }
