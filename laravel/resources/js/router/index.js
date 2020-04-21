@@ -17,11 +17,22 @@ import Header from '../components/header/index';
 import GuestRoute from './guestRoute';
 import AuthRoute from './authRoute';
 import { operations } from '../reducers/ducks/login/index';
+import Loading from '../components/loading/index';
 
 class App extends Component {
     constructor(props) {
         super(props);
-        store.dispatch(operations.reLogin());
+        this.state = {
+            isLoading: true,
+            noneLoading: false
+        }
+    }
+
+    async componentDidMount () {
+        await store.dispatch(operations.reLogin());
+        this.setState({
+            isLoading: false,
+        });
     }
 
     render () {
@@ -30,6 +41,7 @@ class App extends Component {
                 <MuiThemeProvider theme={theme}>
                     <ConnectedRouter history={history}>
                         <ScrollTop>
+                            <Loading isLoading={this.state.isLoading} />
                             <Header />
                             <Wrapper>
                                 <Switch>

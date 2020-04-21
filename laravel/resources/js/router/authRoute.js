@@ -1,38 +1,32 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { operations } from '../reducers/ducks/login/index';
 import useDocumentTitle from '../components/docTitle/index';
 
-const AuthRoute = ({ component: Component, title, authenticated, reLogin, ...rest }) => {
-    // if (!authenticated) {
-    //     reLogin(rest.location.state.from.pathname);
-    // }
+const AuthRoute = ({ component: Component, title, authenticated, isLoading, reLogin, ...rest }) => {
     useDocumentTitle(title);
 
     return (
         <Route
             {...rest}
-            render={props => (authenticated
-                ? <Component {...props} />
-                : <Redirect to="/login" />
-            )}
+            render={props => {
+                if (authenticated) {
+                    return <Component {...props} />;
+                } else {
+                    if (!isLoading) {
+                        <Redirect to="/login" />
+                    }
+                }
+            }}
         />
     );
 }
 
 function mapStateToProps ({ login }) {
     return {
-        authenticated: login.authenticated
+        authenticated: login.authenticated,
+        isLoading: login.isLoading
     }
 }
 
-function mapDispatchToProps (dispatch) {
-    return {
-        reLogin () {
-            dispatch(operations.reLogin());
-        }
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(AuthRoute);
+export default connect(mapStateToProps)(AuthRoute);
