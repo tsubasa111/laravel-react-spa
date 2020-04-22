@@ -2,6 +2,10 @@
 
 ### dockerの設定
 ```
+cd ~/laravel-react-spa/setup
+
+sh shell_command.sh
+
 cd ~/laravel-react-spa/laradock
 
 docker-compose up --build nginx workspace php-fpm phpmyadmin mysql
