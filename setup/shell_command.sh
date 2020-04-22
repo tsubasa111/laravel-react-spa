@@ -1,5 +1,5 @@
-cd ~/Desktop/play/app
-cp ~/Desktop/play/setup/envs/laravel.env .env
+cd ~/Desktop/laravel-react-spa/laravel
+cp ~/Desktop/laravel-react-spa/setup/envs/laravel.env .env
 
-cd ~/Desktop/play/laradock
-cp ~/Desktop/play/setup/envs/laradock.env .env
+cd ~/Desktop/laravel-react-spa/laradock
+cp ~/Desktop/laravel-react-spa/setup/envs/laradock.env .env
