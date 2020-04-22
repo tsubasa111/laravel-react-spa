@@ -2,17 +2,23 @@ import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import useDocumentTitle from '../components/docTitle/index';
+import { getIntendedUrl } from '../utils/auth';
+import { operations } from '../reducers/ducks/header/index';
 
-const GuestRoute = ({ component: Component, title, authenticated, ...rest }) => {
+const GuestRoute = ({ component: Component, title, authenticated, headerTitleChange, ...rest }) => {
     useDocumentTitle(title);
 
     return (
         <Route
             {...rest}
-            render={props => (!authenticated
-                ? <Component {...props} />
-                : <Redirect to="/home" />
-            )}
+            render={props => {
+                if (!authenticated) {
+                    headerTitleChange(title);
+                    return <Component {...props} />
+                } else {
+                    return <Redirect to={{ pathname: getIntendedUrl(), state: { from: props.location } }} />
+                }
+            }}
         />
     );
 }
@@ -23,4 +29,12 @@ function mapStateToProps ({ login }) {
     }
 }
 
-export default connect(mapStateToProps)(GuestRoute);
+function mapDispatchToProps (dispatch) {
+    return {
+        headerTitleChange (title) {
+            dispatch(operations.headerTitleChange(title));
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(GuestRoute);

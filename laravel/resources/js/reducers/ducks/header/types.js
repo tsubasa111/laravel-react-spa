@@ -1,0 +1,5 @@
+const HEADER_TITLECHANGE = 'HEADER_TITLECHANGE';
+
+export default {
+    HEADER_TITLECHANGE
+}

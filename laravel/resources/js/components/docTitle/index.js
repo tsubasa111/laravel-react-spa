@@ -1,4 +1,4 @@
-let { useEffect } = require('react');
+import { useEffect } from 'react';
 
 function useDocumentTitle (title) {
     useEffect(() => {

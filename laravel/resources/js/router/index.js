@@ -17,22 +17,11 @@ import Header from '../components/header/index';
 import GuestRoute from './guestRoute';
 import AuthRoute from './authRoute';
 import { operations } from '../reducers/ducks/login/index';
-import Loading from '../components/loading/index';
 
 class App extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            isLoading: true,
-            noneLoading: false
-        }
-    }
-
-    async componentDidMount () {
-        await store.dispatch(operations.reLogin());
-        this.setState({
-            isLoading: false,
-        });
+        store.dispatch(operations.reLogin());
     }
 
     render () {
@@ -41,16 +30,15 @@ class App extends Component {
                 <MuiThemeProvider theme={theme}>
                     <ConnectedRouter history={history}>
                         <ScrollTop>
-                            <Loading isLoading={this.state.isLoading} />
                             <Header />
                             <Wrapper>
                                 <Switch>
-                                    <GuestRoute exact path="/" render={<Redirect to="/login" />} />
-                                    <GuestRoute exact path="/login" component={Login} title="login" />
-                                    <GuestRoute exact path="/register" component={Register} title="register" />
-                                    <AuthRoute exact path="/home" component={Home} title="home" />
-                                    <AuthRoute exact path="/company" component={Company} title="company" />
-                                    <Route path="*" component={NotFound} title="NotFound" />
+                                    <Route exact path="/" render={() => <Redirect to="/login" />} />
+                                    <GuestRoute exact path="/login" component={Login} title="Login" />
+                                    <GuestRoute exact path="/register" component={Register} title="Register" />
+                                    <AuthRoute exact path="/home" component={Home} title="Home" />
+                                    <AuthRoute exact path="/company" component={Company} title="Company" />
+                                    <Route path="*" component={NotFound} title="Not Found" />
                                 </Switch>
                             </Wrapper>
                         </ScrollTop>

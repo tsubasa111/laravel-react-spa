@@ -34,7 +34,6 @@ const register = (name, email, password, password_confirmation) => {
                 setAccessToken(response.data.access_token);
                 setRefreshToken(response.data.refresh_token);
                 dispatch(actions.loginSuccess(response.data));
-                dispatch(push('/home'));
             })
             .catch(response => {
                 dispatch(actions.loginFail(response.data.errors));

@@ -70,7 +70,7 @@ const Header = (props) => {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" className={classes.title} noWrap>
-                        News
+                        {props.title}
                     </Typography>
                     <Style.LinkBtn to="/login">
                         <Button color="inherit" onClick={handleLogout}>{props.authenticated ? 'logout' : 'login'}</Button>
@@ -112,9 +112,10 @@ const Header = (props) => {
     );
 }
 
-function mapStateToProps ({ login }) {
+function mapStateToProps ({ login, header }) {
     return {
-        authenticated: login.authenticated
+        authenticated: login.authenticated,
+        title: header.title
     }
 }
 
