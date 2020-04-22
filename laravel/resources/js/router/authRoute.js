@@ -13,9 +13,7 @@ const AuthRoute = ({ component: Component, title, authenticated, isLoading, reLo
                 if (authenticated) {
                     return <Component {...props} />;
                 } else {
-                    if (!isLoading) {
-                        <Redirect to="/login" />
-                    }
+                    return <Redirect to="/login" />
                 }
             }}
         />
