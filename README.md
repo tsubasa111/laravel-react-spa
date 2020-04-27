@@ -33,3 +33,6 @@ npm run dev
 
 ### url
 http://localhost:8000  
+
+### phpmyadmin
+http://localhost:8070
