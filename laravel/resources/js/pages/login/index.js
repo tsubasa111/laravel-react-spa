@@ -12,7 +12,7 @@ import Grid from '@material-ui/core/Grid';
 
 const fields = [
     {
-        id: 'mail_address',
+        id: 'email',
         label: 'メールアドレス',
         type: 'text'
     },
@@ -56,7 +56,7 @@ const Login = (props) => {
                     <Grid item xs={6} classes={{
                         item: classes.gridRight
                     }}>
-                        <Style.LinkRightText to="/passwor_forget">パスワード忘れた場合</Style.LinkRightText>
+                        <Style.LinkRightText to="/password/forget">パスワード忘れた場合</Style.LinkRightText>
                     </Grid>
                 </Grid>
             </Card>

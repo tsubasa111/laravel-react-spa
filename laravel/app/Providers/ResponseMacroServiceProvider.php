@@ -47,6 +47,9 @@ class ResponseMacroServiceProvider extends ServiceProvider
          * @param int $status [400系, 500系]
          */
         Response::macro('fail', function ($data = [], $status = 500) {
+            if (!isset($data['errors'])) {
+                $data['errors'] = $data;
+            }
             return response()->json($data, $status);
         });
     }

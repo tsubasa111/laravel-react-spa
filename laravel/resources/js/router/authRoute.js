@@ -8,13 +8,15 @@ import Loading from '../components/loading/circularLoading/index';
 
 const AuthRoute = ({ component: Component, title, authenticated, isLoading, headerTitleChange, ...rest }) => {
     useDocumentTitle(title);
+    React.useEffect(() => {
+        headerTitleChange(title);
+    }, [title]);
 
     return (
         <Route
             {...rest}
             render={props => {
                 if (authenticated) {
-                    headerTitleChange(title);
                     return <Component {...props} />;
                 } else {
                     if (isLoading) {

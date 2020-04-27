@@ -7,13 +7,15 @@ import { operations } from '../reducers/ducks/header/index';
 
 const GuestRoute = ({ component: Component, title, authenticated, headerTitleChange, ...rest }) => {
     useDocumentTitle(title);
+    React.useEffect(() => {
+        headerTitleChange(title);
+    }, [title]);
 
     return (
         <Route
             {...rest}
             render={props => {
                 if (!authenticated) {
-                    headerTitleChange(title);
                     return <Component {...props} />
                 } else {
                     return <Redirect to={{ pathname: getIntendedUrl(), state: { from: props.location } }} />
