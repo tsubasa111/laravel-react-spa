@@ -15,7 +15,7 @@
         "@material-ui/icons": "^4.9.1",
         "@material-ui/styles": "^4.9.10",
         "@material-ui/system": "^4.9.10",
-        "axios": "^0.19",
+        "axios": "^0.21",
         "bootstrap": "^4.0.0",
         "clsx": "^1.1.0",
         "connected-react-router": "^6.8.0",
